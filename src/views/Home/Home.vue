@@ -11,7 +11,9 @@
       </template>
     </van-nav-bar>
     <van-tabs v-model="active" sticky swipeable offset-top="1.22666667rem">
-      <van-tab v-for="item in userChannel" :key="item.id" :title="item.name">{{ item.name }}</van-tab>
+      <van-tab v-for="item in userChannel" :key="item.id" :title="item.name">
+        <ArtList :channelId="item.id"></ArtList>
+      </van-tab>
     </van-tabs>
     <!-- 频道管理图标 -->
     <van-icon name="plus" size="0.42666667rem" class="plus" />
@@ -21,8 +23,13 @@
 <script>
 import { getUserChannelAPI } from '@/api/homeAPI.js'
 
+import ArtList from '@/components/ArtList/ArtLIst.vue'
+
 export default {
   name: 'Home',
+  components: {
+    ArtList
+  },
   data() {
     return {
       // 标签页激活项的索引
