@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+// 导入需要的组件
+import Login from '@/views/Login.vue'
+
 Vue.use(VueRouter)
 
-const routes = []
+const routes = [{ path: '/login', component: Login, name: 'login' }]
 
 const router = new VueRouter({
   routes

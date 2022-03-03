@@ -5,7 +5,9 @@ import router from './router'
 import 'amfe-flexible'
 
 import Vant from 'vant'
-import 'vant/lib/index.css'
+import 'vant/lib/index.less'
+
+import store from '@/store'
 
 Vue.use(Vant)
 
@@ -13,5 +15,6 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
