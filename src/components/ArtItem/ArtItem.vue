@@ -28,14 +28,7 @@
     <!-- 反馈面板 -->
     <van-action-sheet v-model="showFIrst" cancel-text="取消" :closeable="false" @closed="isFirst = true" get-container="body">
       <!-- 一级反馈 -->
-      <!-- <div v-if="isFirst"> -->
       <van-cell :title="item.name" clickable v-for="item in actions" :key="item.name" class="center-title" @click="onCellClick(item.name)" />
-      <!-- </div> -->
-      <!-- 二级反馈 -->
-      <!-- <div v-else>
-        <van-cell title="返回" clickable class="center-title" @click="isFirst = true" />
-        <van-cell :title="item.label" v-for="item in reports" :key="item.type" clickable class="center-title" @click="reportArticle(item.type)" />
-      </div> -->
     </van-action-sheet>
 
     <!-- 二级反馈 -->
