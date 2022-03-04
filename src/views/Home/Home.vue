@@ -16,26 +16,39 @@
       </van-tab>
     </van-tabs>
     <!-- 频道管理图标 -->
-    <van-icon name="plus" size="0.42666667rem" class="plus" />
+    <van-icon name="plus" size="0.42666667rem" class="plus" @click="show = true" />
+
+    <!-- 弹出层，用于管理频道 -->
+    <van-popup v-model="show" :close-on-click-overlay="false" @closed="resetIsDel(false)">
+      <ChannelManage :userChannel="userChannel" :moreChannels="moreChannels" @add-channel="addChannel" @remove-channel="removeChannel" @close-popup="closePopup" @click-channel="clickChannel"></ChannelManage>
+    </van-popup>
   </div>
 </template>
 
 <script>
-import { getUserChannelAPI } from '@/api/homeAPI.js'
+import { getUserChannelAPI, getAllChannelAPI, updateUserChannelAPI } from '@/api/homeAPI.js'
 
 import ArtList from '@/components/ArtList/ArtLIst.vue'
+import ChannelManage from '@/components/ChannelManage/ChannelManage.vue'
+
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'Home',
   components: {
-    ArtList
+    ArtList,
+    ChannelManage
   },
   data() {
     return {
       // 标签页激活项的索引
       active: 0,
-      // 频道列表
-      userChannel: []
+      // 用户选择的频道列表数据
+      userChannel: [],
+      // 弹出层是否显示
+      show: false,
+      // 所有的频道列表数据
+      allChannel: []
     }
   },
   methods: {
@@ -44,10 +57,65 @@ export default {
       if (res.message === 'OK') {
         this.userChannel = res.data.channels
       }
-    }
+    },
+    async initAllChannel() {
+      const { data: res } = await getAllChannelAPI()
+      if (res.message === 'OK') {
+        this.allChannel = res.data.channels
+      }
+    },
+    async updateChannel() {
+      const channels = this.userChannel
+        .filter(item => item.name !== '推荐')
+        .map((item, index) => {
+          return {
+            id: item.id,
+            seq: index + 1
+          }
+        })
+      const { data: res } = await updateUserChannelAPI(channels)
+      if (res.message === 'OK') {
+        // 提示用户频道列表更新成功
+        this.$notify({ type: 'success', message: '更新成功', duration: 1000 })
+      }
+    },
+    addChannel(item) {
+      // 将用户新增的频道添加到用户频道
+      this.userChannel.push(item)
+      // 将最新的频道列表数据提交到后端
+      this.updateChannel()
+    },
+    // 自定义事件，从用户频道列表中删除指定频道
+    removeChannel(channel) {
+      this.userChannel = this.userChannel.filter(item => item.id !== channel.id)
+      // 将更新后的频道列表提交给服务器保存
+      this.updateChannel()
+    },
+    closePopup() {
+      this.show = false
+    },
+    clickChannel(index) {
+      // 修改 Tabs 激活项的索引值
+      this.active = index
+      // 关闭弹出层
+      this.show = false
+    },
+    ...mapMutations('channelAbout', ['resetIsDel'])
   },
   created() {
     this.initUserChannel()
+    this.initAllChannel()
+  },
+  computed: {
+    moreChannels() {
+      // 从全部频道列表数组中过滤掉用户已经选择的频道列表
+      return this.allChannel.filter(item => {
+        const index = this.userChannel.findIndex(ele => ele.id === item.id)
+        if (index === -1) return true
+      })
+    },
+    // 弹出层是否显示
+    ...mapState('channelAbout', ['popupShow'])
   }
 }
 </script>
@@ -67,5 +135,10 @@ export default {
   top: 58px;
   right: 10px;
   z-index: 999;
+}
+
+.van-popup {
+  width: 100%;
+  height: 100%;
 }
 </style>

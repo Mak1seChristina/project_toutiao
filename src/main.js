@@ -4,7 +4,7 @@ import router from './router'
 
 import 'amfe-flexible'
 
-import Vant, { Lazyload } from 'vant'
+import Vant, { Lazyload, Notify } from 'vant'
 import 'vant/lib/index.less'
 
 import store from '@/store'
@@ -34,6 +34,7 @@ Vue.filter('dateFormat', dt => {
 Vue.use(Vant)
 // 图片懒加载
 Vue.use(Lazyload)
+Vue.use(Notify)
 
 Vue.config.productionTip = false
 

@@ -22,3 +22,11 @@ export const dislikeArtApi = id => {
 export const reportArticleAPI = (target, type) => {
   return request.post('/v1_0/article/reports', { target, type })
 }
+
+export const getAllChannelAPI = () => {
+  return request.get('/v1_0/channels')
+}
+
+export const updateUserChannelAPI = channels => {
+  return request.put('/v1_0/user/channels', { channels })
+}
