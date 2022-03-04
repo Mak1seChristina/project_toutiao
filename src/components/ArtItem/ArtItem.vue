@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 文章信息 -->
     <van-cell>
       <!-- 标题区域的插槽 -->
       <template #title>
@@ -19,14 +20,37 @@
         <div class="label-box">
           <span>作者：{{ article.aut_name }} &nbsp;&nbsp; {{ article.comm_count }}评论 &nbsp;&nbsp; 发布日期：{{ article.pubdate | dateFormat }}</span>
           <!-- 关闭按钮 -->
-          <van-icon name="cross" />
+          <van-icon name="cross" @click.stop="showFIrst = true" />
         </div>
       </template>
     </van-cell>
+
+    <!-- 反馈面板 -->
+    <van-action-sheet v-model="showFIrst" cancel-text="取消" :closeable="false" @closed="isFirst = true" get-container="body">
+      <!-- 一级反馈 -->
+      <!-- <div v-if="isFirst"> -->
+      <van-cell :title="item.name" clickable v-for="item in actions" :key="item.name" class="center-title" @click="onCellClick(item.name)" />
+      <!-- </div> -->
+      <!-- 二级反馈 -->
+      <!-- <div v-else>
+        <van-cell title="返回" clickable class="center-title" @click="isFirst = true" />
+        <van-cell :title="item.label" v-for="item in reports" :key="item.type" clickable class="center-title" @click="reportArticle(item.type)" />
+      </div> -->
+    </van-action-sheet>
+
+    <!-- 二级反馈 -->
+    <van-action-sheet v-model="showSecond" cancel-text="返回" :closeable="false" @cancel="backToFirst" get-container="body">
+      <van-cell :title="item.label" v-for="item in reports" :key="item.type" clickable class="center-title" @click="reportArticle(item.type)" />
+    </van-action-sheet>
   </div>
 </template>
 
 <script>
+import reports from '@/api/reports.js'
+
+import { dislikeArtApi, reportArticleAPI } from '@/api/homeAPI.js'
+import { Toast } from 'vant'
+
 export default {
   name: 'ArtItem',
   props: {
@@ -34,6 +58,61 @@ export default {
     article: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      // 是否显示一级反馈面板
+      showFIrst: false,
+      // 是否显示二级反馈面板
+      showSecond: false,
+      // 一级反馈可选项
+      actions: [{ name: '不感兴趣' }, { name: '反馈垃圾内容' }, { name: '拉黑作者' }],
+      // 控制是否为一级反馈
+      isFirst: true,
+      // 二级反馈的可选项列表
+      reports
+    }
+  },
+  methods: {
+    backToFirst() {
+      // 二级反馈面板返回至一级反馈面板
+      this.showSecond = false
+      this.showFIrst = true
+    },
+    async onCellClick(name) {
+      if (name === '不感兴趣') {
+        const { data: res } = await dislikeArtApi(this.artId)
+        if (res.message === 'OK') {
+          this.$emit('remove-article', res.data.target)
+        }
+        this.show = false
+      } else if (name === '拉黑作者') {
+        console.log('拉黑作者')
+        this.show = false
+      } else if (name === '反馈垃圾内容') {
+        this.showSecond = true
+        this.showFIrst = false
+      }
+    },
+    async reportArticle(type) {
+      const { data: res } = await reportArticleAPI(this.artId, type)
+      if (res.message === 'OK') {
+        this.$emit('remove-article', res.data.target)
+        Toast.success({
+          message: '举报成功',
+          duration: 300
+        })
+      }
+      // 关闭动作页面
+      this.show = false
+    }
+  },
+  computed: {
+    // 文章的 id
+    artId() {
+      // 文章对象的 art_id 需要转换成字符串
+      return this.article.art_id.toString()
     }
   }
 }
@@ -62,5 +141,10 @@ export default {
 .thumb-box {
   display: flex;
   justify-content: space-between;
+}
+
+// 设置反馈单元格里面文字居中
+.center-title {
+  text-align: center;
 }
 </style>
