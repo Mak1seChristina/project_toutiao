@@ -20,7 +20,7 @@
         <div class="label-box">
           <span>作者：{{ article.aut_name }} &nbsp;&nbsp; {{ article.comm_count }}评论 &nbsp;&nbsp; 发布日期：{{ article.pubdate | dateFormat }}</span>
           <!-- 关闭按钮 -->
-          <van-icon name="cross" @click.stop="showFIrst = true" />
+          <van-icon name="cross" @click.stop="showFIrst = true" v-if="closable" />
         </div>
       </template>
     </van-cell>
@@ -49,8 +49,13 @@ export default {
   props: {
     // 文章信息对象
     article: {
-      type: Object,
-      required: true
+      type: Object
+    },
+    // 是否显示文章的关闭按钮
+    closable: {
+      type: Boolean,
+      // 默认值为 true，默认显示关闭按钮
+      default: true
     }
   },
   data() {

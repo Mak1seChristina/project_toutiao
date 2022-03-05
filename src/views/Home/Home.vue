@@ -7,7 +7,7 @@
       </template>
       <!-- 右侧插槽 -->
       <template #right>
-        <van-icon name="search" size="18" color="white" />
+        <van-icon name="search" size="18" color="white" @click="$router.push('/search')" />
       </template>
     </van-nav-bar>
     <van-tabs v-model="active" sticky swipeable offset-top="1.22666667rem">

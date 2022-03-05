@@ -6,6 +6,8 @@ import Login from '@/views/Login/Login.vue'
 import Main from '@/views/Main/Main.vue'
 import Home from '@/views/Home/Home.vue'
 import User from '@/views/User/User.vue'
+import Search from '@/views/Search/Search.vue'
+import SearchResult from '@/views/SearchResult/SearchResult.vue'
 
 Vue.use(VueRouter)
 
@@ -20,7 +22,11 @@ const routes = [
       { path: '', component: Home },
       { path: '/user', component: User }
     ]
-  }
+  },
+  // 搜索组件的路由规则
+  { path: '/search', component: Search, name: 'search' },
+  // 搜索结果组件的路由规则
+  { path: '/search/:kw', component: SearchResult, name: 'search-result', props: true }
 ]
 
 const router = new VueRouter({
