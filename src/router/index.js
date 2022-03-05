@@ -8,6 +8,7 @@ import Home from '@/views/Home/Home.vue'
 import User from '@/views/User/User.vue'
 import Search from '@/views/Search/Search.vue'
 import SearchResult from '@/views/SearchResult/SearchResult.vue'
+import ArticleDetail from '@/views/ArticleDetail/ArticleDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -26,7 +27,9 @@ const routes = [
   // 搜索组件的路由规则
   { path: '/search', component: Search, name: 'search' },
   // 搜索结果组件的路由规则
-  { path: '/search/:kw', component: SearchResult, name: 'search-result', props: true }
+  { path: '/search/:kw', component: SearchResult, name: 'search-result', props: true },
+  // 文章详情的路由规则
+  { path: '/article/:id', component: ArticleDetail, name: 'art-detail', props: true }
 ]
 
 const router = new VueRouter({

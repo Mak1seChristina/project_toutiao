@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="$router.push('/article/' + artId)">
     <!-- 文章信息 -->
     <van-cell>
       <!-- 标题区域的插槽 -->
@@ -42,7 +42,6 @@
 import reports from '@/api/reports.js'
 
 import { dislikeArtApi, reportArticleAPI } from '@/api/homeAPI.js'
-import { Toast } from 'vant'
 
 export default {
   name: 'ArtItem',
@@ -97,9 +96,9 @@ export default {
       const { data: res } = await reportArticleAPI(this.artId, type)
       if (res.message === 'OK') {
         this.$emit('remove-article', res.data.target)
-        Toast.success({
+        this.$toast.success({
           message: '举报成功',
-          duration: 300
+          duration: 500
         })
       }
       // 关闭动作页面
