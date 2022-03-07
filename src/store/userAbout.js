@@ -72,5 +72,18 @@ export default {
       // 将清空后的 state 保存到本地存储
       this.commit('userAbout/saveStateToStorage')
     }
+  },
+  getters: {
+    // 用户头像计算属性
+    userAvatar(state) {
+      // 初始头像
+      let imgSrc = 'https://img.yzcdn.cn/vant/cat.jpeg'
+
+      if (state.userInfo.photo) {
+        imgSrc = state.userInfo.photo
+      }
+
+      return imgSrc
+    }
   }
 }
