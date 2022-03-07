@@ -1,6 +1,9 @@
 // 导入 axios 实例对象
 import request from '@/utils/request.js'
 
+// 导入 axios
+import axios from 'axios'
+
 export const loginAPI = data => {
   return request.post('/v1_0/authorizations', data)
 }
@@ -25,4 +28,16 @@ export const updateUserProfileAPI = obj => {
 // 修改头像
 export const updateUserAvatarAPI = photoFD => {
   return request.patch('/v1_0/user/photo', photoFD)
+}
+
+// 换取新的 token
+export const exchangeTokenAPI = refreshToken => {
+  return axios({
+    method: 'PUT',
+    url: 'http://www.liulongbin.top:8000/v1_0/authorizations',
+    headers: {
+      // 请求头中携带身份认证字段
+      Authorization: 'Bearer' + refreshToken
+    }
+  })
 }
