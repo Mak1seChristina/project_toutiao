@@ -77,6 +77,10 @@ export default {
     ...mapState('userAbout', ['userInfo'])
   },
   created() {
+    // this.initUserInfo()
+  },
+  activated() {
+    // 只要组件被激活了，就重新初始化用户的信息
     this.initUserInfo()
   }
 }

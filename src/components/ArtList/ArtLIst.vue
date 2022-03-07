@@ -31,7 +31,7 @@ export default {
       // 时间戳，默认值为当前时间戳
       timestamp: +new Date(),
       // 是否正砸进行上拉加载
-      loading: false,
+      loading: true,
       // 数据是否全部加载完毕
       finished: false,
       // 是否正在进行下拉刷新
@@ -62,7 +62,6 @@ export default {
       }
     },
     onLoad() {
-      console.log('触发了上拉加载更多')
       this.initArtList()
     },
     onRefresh() {

@@ -160,6 +160,18 @@ export default {
   },
   created() {
     this.initCmtList()
+  },
+  watch: {
+    artId() {
+      this.cmtList = []
+      this.offset = null
+      this.loading = false
+      this.finished = false
+      this.isShowBox1 = true
+      this.cmtCount = 0
+      this.cmt = ''
+      this.initCmtList()
+    }
   }
 }
 </script>

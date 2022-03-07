@@ -60,7 +60,7 @@ request.interceptors.response.use(
     const tokenInfo = store.state.userAbout.tokenInfo
 
     // 2. 判断 token 是否过期
-    if (error.message && error.message.status === 401 && tokenInfo.refresh_token) {
+    if (error.response && error.response.status === 401 && tokenInfo.refresh_token) {
       // token 过期
       try {
         // 发起请求，根据 refresh_token 重新请求一个 token

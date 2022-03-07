@@ -10,7 +10,7 @@
         <van-icon name="search" size="18" color="white" @click="$router.push('/search')" />
       </template>
     </van-nav-bar>
-    <van-tabs v-model="active" sticky swipeable offset-top="1.22666667rem">
+    <van-tabs v-model="active" sticky swipeable offset-top="1.22666667rem" :before-change="beforeTabsChange" @change="onTabsChange">
       <van-tab v-for="item in userChannel" :key="item.id" :title="item.name">
         <ArtList :channelId="item.id"></ArtList>
       </van-tab>
@@ -32,6 +32,9 @@ import ArtList from '@/components/ArtList/ArtLIst.vue'
 import ChannelManage from '@/components/ChannelManage/ChannelManage.vue'
 
 import { mapMutations, mapState } from 'vuex'
+
+// 频道名称 和 滚动条位置 对应关系
+const nameToTop = {}
 
 export default {
   name: 'Home',
@@ -100,6 +103,23 @@ export default {
       // 关闭弹出层
       this.show = false
     },
+    // tabs 发生切换之前触发此方法
+    beforeTabsChange() {
+      // 把当前的 频道名称 对应的 滚动条位置 记录到 nameToTop 对象中
+      const name = this.userChannel[this.active].name
+      nameToTop[name] = window.pageYOffset
+
+      // return true 表示允许进行标签页的切换
+      return true
+    },
+    // tabs 切换完毕后，触发此方法
+    onTabsChange() {
+      // dom 更新完毕后再进行滚动
+      this.$nextTick(() => {
+        const name = this.userChannel[this.active].name
+        window.scrollTo(0, nameToTop[name] || 0)
+      })
+    },
     ...mapMutations('channelAbout', ['resetIsDel'])
   },
   created() {
@@ -116,6 +136,11 @@ export default {
     },
     // 弹出层是否显示
     ...mapState('channelAbout', ['popupShow'])
+  },
+  // 导航离开该组件的对应路由时调用
+  beforeRouteLeave(to, from, next) {
+    from.meta.top = window.pageYOffset
+    next()
   }
 }
 </script>

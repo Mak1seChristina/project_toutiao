@@ -49,6 +49,9 @@ import { getArticleDetailAPI, followUserAPI, unfollowUserAPI, addLikeAPI, delLik
 
 import ArtCmt from '@/components/ArtCmt/ArtCmt.vue'
 
+// 导入 highlight.js 模块
+import hljs from 'highlight.js'
+
 export default {
   name: 'ArticleDetail',
   props: ['id'],
@@ -118,6 +121,25 @@ export default {
   },
   created() {
     this.initArticle()
+  },
+  updated() {
+    if (this.article) {
+      // 对文章内容进行高亮处理
+      hljs.highlightAll()
+    }
+  },
+  watch: {
+    id() {
+      // 只要 id 发生了变化，就重新获取文章详情数据
+      this.article = null
+      this.initArticle()
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    from.meta.top = window.pageYOffset
+    setTimeout(() => {
+      next()
+    }, 0)
   }
 }
 </script>

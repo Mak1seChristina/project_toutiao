@@ -49,6 +49,22 @@ export default {
   },
   created() {
     this.initSearchList()
+  },
+  watch: {
+    kw() {
+      this.page = 1
+      this.searchList = []
+      this.loading = false
+      this.finished = false
+
+      this.initSearchList()
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    from.meta.top = window.pageYOffset
+    setTimeout(() => {
+      next()
+    }, 0)
   }
 }
 </script>
