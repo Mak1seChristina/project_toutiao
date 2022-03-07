@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 路由占位符 -->
-    <keep-alive>
+    <keep-alive exclude="UserEdit">
       <router-view></router-view>
     </keep-alive>
 

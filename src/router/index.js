@@ -4,15 +4,41 @@ import VueRouter from 'vue-router'
 import store from '@/store'
 
 // 导入需要的组件
-import Login from '@/views/Login/Login.vue'
-import Main from '@/views/Main/Main.vue'
-import Home from '@/views/Home/Home.vue'
-import User from '@/views/User/User.vue'
-import Search from '@/views/Search/Search.vue'
-import SearchResult from '@/views/SearchResult/SearchResult.vue'
-import ArticleDetail from '@/views/ArticleDetail/ArticleDetail.vue'
-import UserEdit from '@/views/UserEdit/UserEdit.vue'
-import Chat from '@/views/Chat/Chat.vue'
+// 导入 Login 组件
+// import Login from '@/views/Login/Login.vue'
+const Login = () => import('@/views/Login/Login.vue')
+
+// 导入 Main 组件
+// import Main from '@/views/Main/Main.vue'
+const Main = () => import('@/views/Main/Main.vue')
+
+// 导入 Home 组件
+// import Home from '@/views/Home/Home.vue'
+const Home = () => import('@/views/Home/Home.vue')
+
+// 导入 User 组件
+// import User from '@/views/User/User.vue'
+const User = () => import('@/views/User/User.vue')
+
+// 导入 Search 组件
+// import Search from '@/views/Search/Search.vue'
+const Search = () => import('@/views/Search/Search.vue')
+
+// 导入 SearchResult 组件
+// import SearchResult from '@/views/SearchResult/SearchResult.vue'
+const SearchResult = () => import('@/views/SearchResult/SearchResult.vue')
+
+// 导入 ArticleDetail 组件
+// import ArticleDetail from '@/views/ArticleDetail/ArticleDetail.vue'
+const ArticleDetail = () => import('@/views/ArticleDetail/ArticleDetail.vue')
+
+// 导入 UserEdit 组件
+// import UserEdit from '@/views/UserEdit/UserEdit.vue'
+const UserEdit = () => import('@/views/UserEdit/UserEdit.vue')
+
+// 导入 Chat 组件
+// import Chat from '@/views/Chat/Chat.vue'
+const Chat = () => import('@/views/Chat/Chat.vue')
 
 Vue.use(VueRouter)
 

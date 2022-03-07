@@ -47,7 +47,6 @@ export default {
 
     async login() {
       const { data: res } = await loginAPI(this.form)
-      console.log(res)
 
       if (res.message === 'OK') {
         // 把登录成功的结果存储到 state 中
